@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: ${APP_NAME}-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www
+      - ./docker/sites-available/:/etc/apache2/sites-available/
+    ports:
+      - 9000:80
+  mysql:
+    container_name: ${APP_NAME}-database
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes: 
+      - ./.docker/mysql/dbdata:/var/lib/mysql
+    ports: 
+      - "3306:3306"
